@@ -1,0 +1,113 @@
+<html>
+<body>
+
+	<script type="text/javascript">
+		var whatToRender="Hello world without ReactJs";
+		var whereToRender="root";
+		var render=function(whatToRender,whereToRender){
+			document.getElementById(whatToRender).innerHTML=whereToRender;
+		}
+		render(whatToRender,whereToRender);
+	</script>
+</body>
+</html>
+
+-----------------------------------
+<html>
+<body>
+<div id="root">
+	
+</div>
+	
+	<script type="text/javascript">
+	vardom={
+		whatToRender:"Hello world without ReactJs",
+		whereToRender"root",
+		render:function(whatToRender,whereToRender){
+			document.getElementById(whatToRender).innerHTML=whereToRender;
+		}
+	}
+		
+		dom.render(dom.whatToRender,dom.whereToRender);
+	</script>
+</body>
+</html>
+-------------------------------------
+<script type="text/javascript" src="react.js"></script>
+	<script type="text/javascript" src="react-dom.js"></script>
+	<script type="text/javascript">
+		ReactDOM.render(
+		React.DOM.h2(null,"hello World (FirstApp)"),
+		document.getElementById("root")
+		);
+	</script>
+	not vailid in react 16
+	--------------------------------------------------
+	<html>
+<body>
+<div id="mountNode">
+
+</div>
+
+	<script type="text/javascript" src="react.js"></script>
+	<script type="text/javascript" src="react-dom.js"></script>
+	<script type="text/javascript">
+
+		
+		ReactDOM.render(
+		React.createElement('h2',"null","hello World (FirstApp) ReactJs"),
+		document.getElementById("mountNode")
+		);
+	</script>
+
+</body>
+</html>
+-----------------------------------------------------------
+<html>
+<body>
+<div id="mountNode">
+
+</div>
+	<script src="babel.min.js"></script>
+	<script type="text/javascript" src="react.js"></script>
+	<script type="text/javascript" src="react-dom.js"></script>
+	
+		
+		<script type="text/babel">
+			ReactDOM.render(
+			<h2>Hello World</h2>,
+				document.getElementById("mountNode")
+			);
+	</script>
+	
+</body>
+</html>
+------------------------------------------------------------
+<html>
+<body>
+<div id="mountNode">
+
+</div>
+	<script src="babel.min.js"></script>
+	<script type="text/javascript" src="react.js"></script>
+	<script type="text/javascript" src="react-dom.js"></script>
+	
+		
+		<script type="text/babel">
+const element=<div className="container">
+				<h2>Hello World</h2>
+				<p>this is paragraph</p>
+			</div>;
+			ReactDOM.render(
+				element,
+//			<div className="container">
+//				<h2>Hello World</h2>
+//				<p>this is paragraph</p>
+//			</div>,
+				document.getElementById("mountNode")
+			);
+	</script>
+	
+</body>
+</html>
+------------------------------------------------------
