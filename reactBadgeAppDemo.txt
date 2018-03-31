@@ -1,0 +1,343 @@
+---------Demo App of Badges-------------
+
+---------index.js-------------
+	import React from 'react';
+	import ReactDOM from 'react-dom';
+	import './index.css';
+	 import BadgeList from './BadgeList';
+	import registerServiceWorker from './registerServiceWorker';
+
+	ReactDOM.render(<BadgeList />, document.getElementById('root'));
+	registerServiceWorker();
+
+---------Component Badge.js-------------
+import React from 'react';
+
+const Badge=(props)=>{
+    return(
+        <div className="container" style={{width:'300px', margin:'10px',border:'1px solid black'}}>
+            <div  style={{display:'inline-block'}}>
+                <img style={{margin:'10px',width:'75px'}} src={props.avatar_url} />
+                <div className="userDetailSection"  style={{float:'right',margin:'20px'}}>
+                    <div style={{fontSize:'20px',fontWeight:'bold'}} >
+                    {props.name}
+                    </div>
+                    <div  >
+                    {props.company}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+export default Badge;
+
+---------Component BadgeList-------------
+import React from 'react';
+import Badge from './Badge';
+
+const BadgeList=(props)=>{
+    return(
+        <div>
+            <Badge avatar_url="https://avatars3.githubusercontent.com/u/14139137?v=4"
+                name="Shyam Patidar"
+                company="Yash Technology" />
+            <Badge avatar_url="https://avatars2.githubusercontent.com/u/36689931?v=4"
+                name="Pankaj Sharma"
+                company="Yash Technology" />
+        </div>
+        
+    );
+
+}
+export default BadgeList;
+
+
+===================
+import React from 'react';
+import Badge from './Badge';
+
+class BadgeList extends React.Component{
+    state={
+        data:[
+
+            {
+                avatar_url:"https://avatars3.githubusercontent.com/u/14139137?v=4",
+                                 name:"Shyam Patidar",
+                                company:"Yash Technology"
+            },
+            {
+                avatar_url:"https://avatars2.githubusercontent.com/u/36689931?v=4",
+                                name:"Pankaj Sharma",
+                                 company:"Yash Technology" 
+            }
+        ]
+    }
+    render(){
+        return(
+            <div>
+                {this.state.data.map( badge=> <Badge {...badge} />)}
+            </div>
+        );
+    }
+}
+
+// const BadgeList=(props)=>{
+//     return(
+//         <div>
+//             <Badge avatar_url="https://avatars3.githubusercontent.com/u/14139137?v=4"
+//                 name="Shyam Patidar"
+//                 company="Yash Technology" />
+//             <Badge avatar_url="https://avatars2.githubusercontent.com/u/36689931?v=4"
+//                 name="Pankaj Sharma"
+//                 company="Yash Technology" />
+//         </div>
+        
+//     );
+// }
+export default BadgeList;
+==============
+---------------badge FOrm---handaling event-----------------------------
+import React from 'react';
+
+class BadgeForm extends React.Component{
+    handleSubmit=(event)=>{
+        event.preventDefault();
+        console.log('Button clicked',this.userNameText.value);
+    }
+    render(){
+        return(
+            <div style={{margin:'10px'}}>
+                <form onSubmit={this.handleSubmit}>
+              
+                    <input type="text"
+                    ref={(input) => { this.userNameText = input; }}
+                     placeholder="GitHub username"/>
+                    <button>Add</button>
+                </form>
+            </div>
+        );
+    }
+}
+export default BadgeForm;
+
+=======Controlled Component and Virtual DOM=====
+
+import React from 'react';
+
+class BadgeForm extends React.Component{
+    state={userName:''}
+    updateUserName=(event)=>{
+        this.setState({
+            userName:event.target.value
+        })
+    }
+
+    handleSubmit=(event)=>{
+        event.preventDefault();
+        console.log('Button clicked',this.state.userName);
+      //  console.log('Button clicked',this.userNameText.value);
+      //  console.log('Button clicked',document.getElementById("userNameText").value);
+
+    }
+    render(){
+        return(
+            <div style={{margin:'10px'}}>
+                <form onSubmit={this.handleSubmit}>
+              
+                    <input type="text"
+                //    ref={(input) => { this.userNameText = input; }}
+                    onChange={this.updateUserName}
+                     placeholder="GitHub username"/>
+                    <button>Add</button>
+                </form>
+            </div>
+        );
+    }
+}
+export default BadgeForm;
+
+================----getting data from url in json-------------------------
+---------using - > fetch,axios-----------
+import React from 'react';
+import axios from 'axios';
+
+class BadgeForm extends React.Component{
+    state={userName:''}
+    updateUserName=(event)=>{
+        this.setState({
+            userName:event.target.value
+        })
+    }
+
+    handleSubmit=(event)=>{
+        event.preventDefault();
+        console.log('Button clicked',this.state.userName);
+        //AJAX Call: JQuery, fetch,axios
+        //fetch use
+        // fetch(`https://api.github.com/users/${this.state.userName}`)
+        // .then(function(res){
+        //     console.log(res.json());
+        // })
+
+        //axios use
+        axios(`https://api.github.com/users/${this.state.userName}`)
+        .then(function(res){
+            console.log(res);
+        })
+    }
+    render(){
+        return(
+            <div style={{margin:'10px'}}>
+                <form onSubmit={this.handleSubmit}>
+              
+                    <input type="text"
+                   onChange={this.updateUserName}
+                     placeholder="GitHub username"/>
+                    <button>Add</button>
+                </form>
+            </div>
+        );
+    }
+}
+export default BadgeForm;
+-------------------------------------------
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+---------------------------final code---------------------------------
+------App.js-------------import React ,{Component} from 'react';
+import BadgeForm from './BadgeForm';
+import BadgeList from './BadgeList';
+
+class App extends Component{
+    state={
+        data:[
+            {
+                avatar_url:"https://avatars3.githubusercontent.com/u/14139137?v=4",
+                                 name:"Shyam Patidar",
+                                company:"Yash Technology",
+                                id:"1"
+            },
+            {
+                avatar_url:"https://avatars2.githubusercontent.com/u/36689931?v=4",
+                                name:"Pankaj Sharma",
+                                 company:"Yash Technology" ,
+                                 id:"2"
+            }
+        ]
+    }
+
+    addNewBadge=(badgeInfo)=>{
+        this.setState({
+            data:this.state.data.concat(badgeInfo)
+        });
+    }
+
+    render(){
+        return(
+            <div style={{margin:'20px'}}>
+                <BadgeForm onSubmit={this.addNewBadge}/>
+                <hr/>
+                <BadgeList badges={this.state.data}/>
+            </div>
+        );
+    }
+}
+export default App;
+
+-------BadgeForm.js-------
+import React from 'react';
+import axios from 'axios';
+
+class BadgeForm extends React.Component{
+    state={userName:''}
+    updateUserName=(event)=>{
+        this.setState({
+            userName:event.target.value
+        })
+    }
+
+    handleSubmit=(event)=>{
+        event.preventDefault();
+        console.log('Button clicked',this.state.userName);
+        //AJAX Call: JQuery, fetch,axios
+        //fetch use
+        // fetch(`https://api.github.com/users/${this.state.userName}`)
+        // .then(function(res){
+        //     console.log(res.json());
+        // })
+
+        //axios use
+       axios(`https://api.github.com/users/${this.state.userName}`)
+        .then(function(res){
+            console.log(res);
+        })
+    }
+    render(){
+        return(
+            <div style={{margin:'10px'}}>
+                <form onSubmit={this.handleSubmit}>
+              
+                    <input type="text"
+                   onChange={this.updateUserName}
+                     placeholder="GitHub username"/>
+                    <button>Add</button>
+                </form>
+            </div>
+        );
+    }
+}
+export default BadgeForm;
+
+--------BadgeList.js--------
+import React from 'react';
+import Badge from './Badge';
+
+
+ const BadgeList=(props)=>{
+    return(
+            <div>
+                {
+                    props.badges.map(
+                         badge=> <Badge {...badge} key={badge.name} />
+                    )
+                    }
+            </div> 
+      );
+ }
+export default BadgeList;
+
+-----------Badge.js--------
+import React from 'react';
+
+const Badge=(props)=>{
+    return(
+        <div className="container" style={{width:'300px', margin:'10px',border:'1px solid black'}}>
+            <div  style={{display:'inline-block'}}>
+                <img style={{margin:'10px',width:'75px'}} src={props.avatar_url} />
+                <div className="userDetailSection"  style={{float:'right',margin:'20px'}}>
+                    <div style={{fontSize:'20px',fontWeight:'bold'}} >
+                    {props.name}
+                    </div>
+                    <div  >
+                    {props.company}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+export default Badge;
+-----------index.js---------
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+ import App from './App';
+import registerServiceWorker from './registerServiceWorker';
+
+ReactDOM.render(<App />, document.getElementById('root'));
+registerServiceWorker();
+
+---------END---------
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

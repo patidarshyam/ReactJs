@@ -1,0 +1,296 @@
+<html>
+<body>
+<div id="mountNode">
+
+</div>
+	<script src="babel.min.js"></script>
+	<script type="text/javascript" src="react.js"></script>
+	<script type="text/javascript" src="react-dom.js"></script>
+	
+		
+	<script type="text/babel">
+		class Hello extends React.Component{
+			render(){
+				return(
+					<h1>Hello World..by Hello</h1>
+					
+				);
+			}
+		}
+		class World extends React.Component{
+			render(){
+				return(
+					<h1>Hello World..by World</h1>
+				);
+			}
+		}
+		class App extends React.Component{
+			render(){
+				return(
+					<div>
+						<Hello/>
+						<World/>
+					</div>
+				);
+			}
+		}
+		ReactDOM.render(<App/>,document.getElementById('mountNode'));
+	</script>
+	
+</body>
+</html>
+----------------------------------------------
+class Button extends React.Component{
+constructor(props){
+super(props);
+this.state={
+counter:0
+}
+}
+render(){
+return(
+	<button>{this.state.counter}</button>
+)
+}
+}
+ReactDOM.render(<Button/>,document.getElementById('mountNode'));
+-----------------------Handling event----------------
+class Button extends React.Component{
+constructor(props){
+  super(props);
+  this.state={
+  counter:10
+	}
+  // bind function with this ref
+  this.handleClick=this.handleClick.bind(this);
+	}
+  handleClick (){
+  console.log('button clicked',this.state.counter);
+  }
+render(){
+return(
+	<button onClick={this.handleClick}>{this.state.counter}</button>
+)
+}
+}
+ReactDOM.render(<Button/>,document.getElementById('mountNode'));
+-----------------------------------------
+class Button extends React.Component{
+state = {counter:0}
+  handleClick =()=>{
+  console.log('button clicked',this.state.counter);
+  }
+render(){
+return(
+	<button onClick={this.handleClick}>{this.state.counter}</button>
+)
+}
+}
+ReactDOM.render(<Button/>,document.getElementById('mountNode'));
+-------------------------------------------------------
+class Button extends React.Component{
+state = {counter:0}
+  handleClick =()=>{
+		this.setState({
+    	counter:this.state.counter + 1
+    })
+  }
+render(){
+return(
+	<button onClick={this.handleClick}>{this.state.counter}</button>
+)
+}
+}
+ReactDOM.render(<Button/>,document.getElementById('mountNode'));
+-----------------this is write code-----------------------------
+class Button extends React.Component{
+state = {counter:0}
+  handleClick =()=>{
+		this.setState ( (prevState) =>{
+    	return{
+      	counter:prevState.counter+1
+      }
+    });
+  }
+render(){
+return(
+	<button onClick={this.handleClick}>{this.state.counter}</button>
+)
+}
+}
+ReactDOM.render(<Button/>,document.getElementById('mountNode'));
+----------------------final version------------------------
+class Button extends React.Component{
+state = {counter:0}
+  handleClick =()=>{
+		this.setState ( (prevState) =>({
+   
+      	counter:prevState.counter+1
+    }));
+  }
+render(){
+return(
+	<button onClick={this.handleClick}>{this.state.counter}</button>
+)
+}
+}
+ReactDOM.render(<Button/>,document.getElementById('mountNode'));
+-----------------------Demo app--------------------------
+class Button extends React.Component{
+
+  handleClick =(props)=>{
+		props.increamentCounter()
+  }
+render(){
+return(
+	<button onClick={()=>this.handleClick(this.props.myIncreamentCounter())}>+1</button>
+)
+}
+}
+
+const Result=(props)=>{
+return(
+	<div>
+  	  {props.counter}
+  	</div>
+);
+}
+
+class App extends React.Component{
+state = {counter:0}
+increamentCounter=()=>{
+	this.setState((prevState)=>({
+  counter:prevState.counter+1
+  }));
+}
+render(){
+	return(
+  	<div>
+  	  <Button myIncreamentCounter={this.increamentCounter}/>
+      <Result counter={this.state.counter}/>
+  	</div>
+  );
+}
+}
+
+ReactDOM.render(<App/>,document.getElementById('mountNode'));
+----------------v2-----------------------------
+class Button extends React.Component{
+
+  // handleClick =(props)=>{
+  // props.increamentCounter()
+  // }
+render(){
+return(
+	<button onClick={()=>this.props.myIncreamentCounter()}>+1</button>
+)
+}
+}
+
+const Result=(props)=>{
+return(
+	<div>
+  	  {props.counter}
+  	</div>
+);
+}
+
+class App extends React.Component{
+state = {counter:0}
+increamentCounter=()=>{
+	this.setState((prevState)=>({
+  counter:prevState.counter+1
+  }));
+}
+render(){
+	return(
+  	<div>
+  	  <Button myIncreamentCounter={this.increamentCounter}/>
+      <Result counter={this.state.counter}/>
+  	</div>
+  );
+}
+}
+
+ReactDOM.render(<App/>,document.getElementById('mountNode'));
+---------------reusability-----assignment-------------------------
+class Button extends React.Component{
+
+  // handleClick =(props)=>{
+  // props.increamentCounter()
+  // }
+render(){
+return(
+	<button onClick={()=>this.props.myIncreamentCounter()}>{this.props.increamentValue}</button>
+)
+}
+}
+
+const Result=(props)=>{
+return(
+	<div>
+  	  {props.counter}
+  	</div>
+);
+}
+
+class App extends React.Component{
+state = {counter:0}
+increamentCounter=()=>{
+	this.setState((prevState)=>({
+  counter:prevState.counter+1  //this.increamentValue
+  }));
+}
+render(){
+	return(
+  	<div>
+  	  <Button increamentValue={1}myIncreamentCounter={this.increamentCounter}/>
+      <Button increamentValue={5}myIncreamentCounter={this.increamentCounter}/>
+      <Button increamentValue={10}myIncreamentCounter={this.increamentCounter}/>
+      <Result counter={this.state.counter}/>
+  	</div>
+  );
+}
+}
+
+ReactDOM.render(<App/>,document.getElementById('mountNode'));
+----------------------assignment of  mutliple button increament-------------------------------------
+class Button extends React.Component{
+  render(){
+  return(
+    <button onClick={()=>this.props.myIncreamentCounter(this.props.increamentValue)}> 
+    	{this.props.increamentValue}
+    </button>
+  )
+  }
+}
+
+const Result=(resVar)=>{
+  return(
+    <div>
+        {resVar.counter}
+      </div>
+  );
+}
+
+class App extends React.Component{
+  state = {counter:0}
+  increamentCounter=(value)=>{
+    this.setState((prevState)=>({
+    counter:prevState.counter+value 
+    }));
+  }
+  render(){
+    return(
+      <div>
+        <Button increamentValue={1} myIncreamentCounter={this.increamentCounter}/>
+        <Button increamentValue={5} myIncreamentCounter={this.increamentCounter}/>
+        <Button increamentValue={10} myIncreamentCounter={this.increamentCounter}/> 
+        <Result counter={this.state.counter}/>
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(<App/>,document.getElementById('mountNode'));
+-----------------------assignment of match stick game---------------
